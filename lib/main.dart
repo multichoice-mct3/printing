@@ -1,18 +1,32 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:print/print_page.dart';
+import 'package:print/web_view.dart';
 
-void main() => runApp(
-      MaterialApp(
-        theme: ThemeData.dark().copyWith(
-            bottomSheetTheme: const BottomSheetThemeData(
-                backgroundColor: Colors.transparent)),
-        home: HomePage(),
-        debugShowCheckedModeBanner: false,
-      ),
+void main() {
+  const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  runApp(
+    const MyApp(),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: const WebViewExample(),
+      debugShowCheckedModeBanner: false,
     );
+  }
+}
 
 class HomePage extends StatelessWidget {
   final List<Map<String, dynamic>> data = [
@@ -33,10 +47,10 @@ class HomePage extends StatelessWidget {
         );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter - Thermal Printer'),
-        backgroundColor: Colors.redAccent,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Flutter - Thermal Printer'),
+      //   backgroundColor: Colors.redAccent,
+      // ),
       body: Column(
         children: [
           Expanded(

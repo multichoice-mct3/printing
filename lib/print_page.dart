@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 class PrintPage extends StatefulWidget {
   final List<Map<String, dynamic>> data;
-  const PrintPage(this.data);
+  const PrintPage(this.data, {Key? key}) : super(key: key);
 
   @override
   _PrintPageState createState() => _PrintPageState();
@@ -71,7 +71,7 @@ class _PrintPageState extends State<PrintPage> {
     if (device.address != null) {
       await bluetoothPrint.connect(device);
 
-      Map<String, dynamic> config = {};
+      // Map<String, dynamic> config = {};
       List<LineText> list = [];
 
       list.add(

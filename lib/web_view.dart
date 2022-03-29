@@ -91,50 +91,51 @@ class _WebViewExampleState extends State<WebViewExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter WebView example'),
-        // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
-        actions: <Widget>[
-          NavigationControls(_controller.future),
-          // SampleMenu(_controller.future),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text('UnderSun Sports'),
+      //   // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
+      //   actions: <Widget>[
+      //     NavigationControls(_controller.future),
+      //     // SampleMenu(_controller.future),
+      //   ],
+      // ),
       // We're using a Builder here so we have a context that is below the Scaffold
       // to allow calling Scaffold.of(context) so we can show a snackbar.
-      body: Builder(builder: (BuildContext context) {
-        return WebView(
-          initialUrl: 'https://www.undersunsports.com/',
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-          },
-          onProgress: (int progress) {
-            setState(() {
-              this.progress = progress;
-            });
-            print('WebView is loading (progress : $progress%)');
-          },
-          javascriptChannels: <JavascriptChannel>{
-            _toasterJavascriptChannel(context),
-          },
-          navigationDelegate: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              print('blocking navigation to $request}');
-              return NavigationDecision.prevent;
-            }
-            print('allowing navigation to $request');
-            return NavigationDecision.navigate;
-          },
-          onPageStarted: (String url) {
-            print('Page started loading: $url');
-          },
-          onPageFinished: (String url) {
-            print('Page finished loading: $url');
-          },
-          gestureNavigationEnabled: true,
-          backgroundColor: const Color(0x00000000),
-        );
-      }),
+      body: SafeArea(
+        child: Builder(builder: (BuildContext context) {
+          return WebView(
+            initialUrl: 'https://www.undersunsports.com/',
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
+            onProgress: (int progress) {
+              setState(() {
+                this.progress = progress;
+              });
+            },
+            javascriptChannels: <JavascriptChannel>{
+              _toasterJavascriptChannel(context),
+            },
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                // print('blocking navigation to $request}');
+                return NavigationDecision.prevent;
+              }
+              // print('allowing navigation to $request');
+              return NavigationDecision.navigate;
+            },
+            onPageStarted: (String url) {
+              // print('Page started loading: $url');
+            },
+            onPageFinished: (String url) {
+              // print('Page finished loading: $url');
+            },
+            gestureNavigationEnabled: true,
+            backgroundColor: const Color(0x00000000),
+          );
+        }),
+      ),
       bottomSheet:
           progress == 100 ? const SizedBox() : BottomSheet(progress: progress),
     );
@@ -231,7 +232,7 @@ enum MenuOptions {
 }
 
 class SampleMenu extends StatelessWidget {
-  SampleMenu(this.controller);
+  SampleMenu(this.controller, {Key? key}) : super(key: key);
 
   final Future<WebViewController> controller;
   final CookieManager cookieManager = CookieManager();
@@ -487,7 +488,8 @@ class SampleMenu extends StatelessWidget {
 }
 
 class NavigationControls extends StatelessWidget {
-  const NavigationControls(this._webViewControllerFuture);
+  const NavigationControls(this._webViewControllerFuture, {Key? key})
+      : super(key: key);
 
   final Future<WebViewController> _webViewControllerFuture;
 
